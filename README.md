@@ -16,3 +16,8 @@ of very large size.
 
 A third wrinkle is that I compute the mid-P variant of the Fisher Exact Test,
 which many textbooks recommend.
+
+I also compute the Z-value, the Z-value that has the same P-value, and their
+ratio.  These calculations allow one to assess how accurate an approximate
+P-value computed using the normal distribution would be.  I put this part in
+because I was curious about the accuracy or otherwise of the normal approximation.
