@@ -1,6 +1,12 @@
 #!/usr/bin/python3
 import fileinput
+import math
 
+
+#  VERY EARLY stage
+#  DOES NOT WORK YET
+#  
+#  DO NOT USE
 
 '''
 
@@ -67,7 +73,29 @@ declarations before calls.  So my Perl habit of sticking all
 my sub{...} stuff at the end won't work here.
 '''
 
+def LnFact(a:int) -> float:
+     if not hasattr(LnFact, "cache"):
+          # fill in first few entries
+          LnFact.cache = [0]
+          for i in range(1, 20):
+               LnFact.cache.append( LnFact.cache[i-1] + math.log(i))
+          #  Factorial of 0 is 1 so its log is 0
+     else:
+          #  Try to find this value in the cache
+          try:
+              return float(LnFact.cache[a])
+          except IndexError:
+              # OK, we need to extend the cache
+              for i in range(len(LnFact.cache) , a + 20):
+                   LnFact.cache.append( LnFact.cache[i-1] + math.log(i))
+              return float(LnFact.cache[a])
 
+
+        
+#        if a==0:
+#            return 0
+#        else:
+#            return LnFact(a-1) + math.log(a)
 
 
 with fileinput.input() as stdin:
@@ -94,6 +122,22 @@ with fileinput.input() as stdin:
                       a  , "\t", b  , "\t",  a+b     , "\n",
                       c  , "\t", d  , "\t",  c+d     ,  "\n",
                       a+c, "\t", b+d, "\t",  a+b+c+d , "\n")
+           LnFactTotal = LnFact(a+b+c+d)
+           print('lnfact of ', a+b+c+d, ' = ', LnFactTotal) 
+           try:
+                foo = LnFactTotal / math.log(float(10))
+           except:
+                foo = float(2)
+
+           print('foo is: ' , foo)
+           print('type(LnFactTotal) returns: ' , type(LnFactTotal))
+           print('type(3 / 5) returns: ' , type(3 * 5))
+           print('type(float(3) / 5) returns: ' , type(float(3) / 5))
+
+
+           # Now LnFactTotal is a float
+#           LnFactTotal_doubled = 2 * LnFactTotal
+
        else:
            print('ignoring input:',
                   line)
