@@ -79,7 +79,8 @@ def LnFact(a:int) -> float:
           LnFact.cache = [0]
           for i in range(1, 20):
                LnFact.cache.append( LnFact.cache[i-1] + math.log(i))
-          #  Factorial of 0 is 1 so its log is 0
+               #  Factorial of 0 is 1 so its log is 0
+          return float(LnFact.cache[a])
      else:
           #  Try to find this value in the cache
           try:
@@ -104,7 +105,7 @@ with fileinput.input() as stdin:
        # line is a string object; using its rstrip method to
        # remove its newline(s).  Using both \r and \n so it
        # will work with all platforms
-       print("Input line: ", line)
+       print("\n\nInput line: ", line, end="")
        import re
        p=re.compile(r'[^0-9]*([0-9]+)[^0-9]+([0-9]+)[^0-9]+([0-9]+)[^0-9]+([0-9]+)')
        #                  A              B             C              D
@@ -121,23 +122,15 @@ with fileinput.input() as stdin:
            print(     "\n",
                       a  , "\t", b  , "\t",  a+b     , "\n",
                       c  , "\t", d  , "\t",  c+d     ,  "\n",
-                      a+c, "\t", b+d, "\t",  a+b+c+d , "\n")
+                      a+c, "\t", b+d, "\t",  a+b+c+d)
            LnFactTotal = LnFact(a+b+c+d)
-           print('lnfact of ', a+b+c+d, ' = ', LnFactTotal) 
-           try:
-                foo = LnFactTotal / math.log(float(10))
-           except:
-                foo = float(2)
-
-           print('foo is: ' , foo)
-           print('type(LnFactTotal) returns: ' , type(LnFactTotal))
-           print('type(3 / 5) returns: ' , type(3 * 5))
-           print('type(float(3) / 5) returns: ' , type(float(3) / 5))
-
-
-           # Now LnFactTotal is a float
-#           LnFactTotal_doubled = 2 * LnFactTotal
-
+           LogTenFactTotal = LnFactTotal / float(math.log(10))
+           print('Ln of ', a+b+c+d, ' factorial is ',
+                  LnFactTotal, ' and Log10 is ', LogTenFactTotal)
+           FractionalPart = LogTenFactTotal - int(LogTenFactTotal)
+           TenToFrac = math.exp(FractionalPart * float(math.log(10)))
+           print('fractional part of log10 is ', FractionalPart,
+                 'and mantissa of its antilog is' , TenToFrac )
        else:
            print('ignoring input:',
                   line)
