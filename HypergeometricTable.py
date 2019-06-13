@@ -36,27 +36,68 @@ Test are based on some old Java code, as described later in
 this docstrinc
 
 
-Hypergeometric tables in Python.  Based on my old Perl code,
-which in turn is PARTLY based on some old Java code.  That code
-was in a file called FisherExact.java which was found within
-a tarball at
+
+
+
+Hypergeometric tables in Python.  As noted above,
+based on my old Perl code, which in turn was derived
+in roughly equal proportion from ideas found in three
+sources:
+
+     1. An old version of the BMJ Statistics at Square
+        One textbook, at
+        https://www.bmj.com/about-bmj/resources-readers/publications
+
+     2. The Two by Two Table tool from www.openepi.com
+
+     3. Some old Java code, which was at
 http://www.inference.phy.cam.ac.uk/mackay/java/pal-1.4.tar.gz/
-Note that the above URL is not working.  As of 13 June 2019,
-it can be obtained by searching the Wayback Machine at
-https://archive.org/web/ for that URL.  As of 13 June 2019,
-the Wayback Machine had two snapshots of the tarball, which
-it captured on 3 January 2006 and again on 15 April 2016.
-
-That Java code was part of a package written by the "PAL
-Development Core Team," who were at Auckland, Oxford, and NCSU
-when they wrote it.  The code says (c) 1999-2001 and that it
-may be distributed under the GNU LGPL; it doesn't specify a
-version of the LGPL.
+        when I downloaded it some years ago.  That URL does not
+        work now.  Two snapshots of that tarball
+        can be found by searching https://archive.org/web/
+        for the above URL.  Once you've downloaded and unpacked
+        the tarball, it's src/pal/statistics/FisherExact.java
 
 
 
+
+
+Note that unlike Perl, Python always needs to see function
+declarations before calls.  So my Perl habit of sticking all
+my sub{...} stuff at the end won't work here.
 '''
 
+
+
+
+with fileinput.input() as stdin:
+    for line in stdin:
+       line = line.rstrip('\r\n')
+       # line is a string object; using its rstrip method to
+       # remove its newline(s).  Using both \r and \n so it
+       # will work with all platforms
+       print("Input line: ", line)
+       import re
+       p=re.compile(r'[^0-9]*([0-9]+)[^0-9]+([0-9]+)[^0-9]+([0-9]+)[^0-9]+([0-9]+)')
+       #                  A              B             C              D
+       # Intended to be VERY forgiving: take the first four things that look
+       # like integers, ignoring all else.
+       s = p.search(line)
+       if s:
+           a = int(s.group(1))
+           b = int(s.group(2))
+           c = int(s.group(3))
+           d = int(s.group(4))
+           # OK, now we have our input values
+           # so make the basic table
+           print(     "\n",
+                      a  , "\t", b  , "\t",  a+b     , "\n",
+                      c  , "\t", d  , "\t",  c+d     ,  "\n",
+                      a+c, "\t", b+d, "\t",  a+b+c+d , "\n")
+       else:
+           print('ignoring input:',
+                  line)
+   
 
 
 
